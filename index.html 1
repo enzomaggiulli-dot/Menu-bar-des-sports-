@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BYENZO – Vos menus en ligne</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@300;400;700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #d4a843; --red-dark: #1a1a1a; --dark: #1a1a1a; --darker: #0a0a0a;
+  --light: #f5f5f5; --grey: #222222; --grey2: #333333; --gold: #d4a843; --white: #fff;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--darker); color: var(--light); font-family: 'Lato', sans-serif; font-weight: 300; line-height: 1.5; }
+
+/* PAGES */
+.page { display: none; min-height: 100vh; }
+.page.active { display: block; }
+
+/* ══ PAGE ACCUEIL ══ */
+.home-header { background: #111111; text-align: center; padding: 3rem 1rem 2.5rem; position: relative; overflow: hidden; }
+.home-header::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 12px,rgba(0,0,0,0.07) 12px,rgba(0,0,0,0.07) 24px); }
+.home-header h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,10vw,5.5rem); color:white; letter-spacing:0.1em; position:relative; text-shadow:3px 3px 0 rgba(0,0,0,0.3); }
+.home-header p { position:relative; color:rgba(255,255,255,0.7); font-size:0.85rem; letter-spacing:0.2em; text-transform:uppercase; margin-top:0.5rem; }
+.home-main { max-width:960px; margin:0 auto; padding:3rem 1.5rem; }
+.home-intro { text-align:center; margin-bottom:3rem; }
+.home-intro h2 { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:0.1em; color:var(--gold); margin-bottom:0.5rem; }
+.home-intro p { font-size:0.9rem; color:rgba(255,255,255,0.45); }
+.resto-card { background:var(--grey); border:1px solid var(--grey2); border-radius:4px; overflow:hidden; cursor:pointer; transition:transform 0.25s, border-color 0.25s; max-width:340px; }
+.resto-card:hover { transform:translateY(-5px); border-color:var(--gold); }
+.card-top { background: linear-gradient(135deg, #1a1a1a, #2a2a2a); border-bottom: 2px solid var(--gold); padding:1.8rem 1.5rem 1.4rem; position:relative; overflow:hidden; }
+.card-top::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(0,0,0,0.06) 8px,rgba(0,0,0,0.06) 16px); }
+.card-top h3 { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:white; position:relative; text-shadow:2px 2px 0 rgba(0,0,0,0.25); }
+.card-top .type { font-size:0.72rem; letter-spacing:0.25em; color:rgba(255,255,255,0.65); text-transform:uppercase; position:relative; margin-top:0.2rem; }
+.card-body { padding:1.2rem 1.5rem 1.5rem; }
+.card-tags { display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1rem; }
+.tag { background:var(--grey2); font-size:0.72rem; padding:0.25rem 0.6rem; border-radius:2px; color:rgba(255,255,255,0.55); }
+.card-cta { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.1em; color:var(--gold); }
+.home-footer { text-align:center; padding:2rem; font-size:0.75rem; color:rgba(255,255,255,0.2); border-top:1px solid var(--grey2); margin-top:2rem; }
+.home-footer span { color:var(--gold); }
+
+/* ══ PAGE MENU ══ */
+.menu-header { background:var(--red-dark); text-align:center; padding:2.5rem 1rem 2rem; position:relative; overflow:hidden; }
+.menu-header::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(0,0,0,0.08) 10px,rgba(0,0,0,0.08) 20px); }
+.menu-header h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,10vw,5.5rem); letter-spacing:0.08em; color:var(--white); position:relative; text-shadow:3px 3px 0 rgba(0,0,0,0.4); }
+.menu-header .tagline { font-family:'Playfair Display',serif; font-style:italic; color:var(--gold); font-size:1rem; letter-spacing:0.2em; position:relative; margin-top:0.3rem; }
+.menu-header .notice { position:relative; margin-top:0.8rem; font-size:0.72rem; color:rgba(255,255,255,0.6); }
+nav { background:#111111; border-bottom: 2px solid var(--gold) !important; display:flex; flex-wrap:wrap; justify-content:center; position:sticky; top:0; z-index:100; border-bottom:2px solid var(--red); }
+nav a { color:rgba(255,255,255,0.6); text-decoration:none; font-family:'Bebas Neue',sans-serif; font-size:0.95rem; letter-spacing:0.1em; padding:0.75rem 0.8rem; transition:color 0.2s,background 0.2s; }
+nav a:hover { color:var(--white); background:var(--red); }
+.back-btn { display:inline-flex; align-items:center; gap:0.4rem; background:var(--red); color:white; border:none; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:0.85rem; letter-spacing:0.1em; padding:0.5rem 1rem; position:fixed; bottom:1.2rem; left:1rem; z-index:200; border-radius:2px; }
+.section { max-width:900px; margin:0 auto; padding:2.5rem 1rem; }
+.section-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; }
+.section-header h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.8rem,5vw,2.8rem); letter-spacing:0.06em; color:var(--white); white-space:nowrap; }
+.section-header .line { flex:1; height:2px; background:linear-gradient(90deg,var(--red),transparent); }
+.section-sub { color:var(--gold); font-size:0.85rem; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1.2rem; }
+.formulas { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; margin-bottom:0.5rem; }
+.formula-card { background:var(--grey); border-left:4px solid var(--red); padding:1.2rem; border-radius:2px; }
+.formula-card h3 { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--red); }
+.formula-card .price { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--gold); margin:0.3rem 0; }
+.formula-card p { font-size:0.9rem; color:rgba(255,255,255,0.65); line-height:1.5; }
+.items-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1px; background:var(--grey2); border:1px solid var(--grey2); border-radius:2px; overflow:hidden; }
+.item { background:var(--dark); padding:1.1rem 1.2rem; display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem; }
+.item:hover { background:var(--grey); }
+.item-info { flex:1; }
+.item-name { font-weight:700; font-size:1.05rem; color:var(--white); line-height:1.3; }
+.item-desc { font-size:0.88rem; color:rgba(255,255,255,0.5); margin-top:0.2rem; line-height:1.4; }
+.item-price { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--gold); white-space:nowrap; }
+.divider { border:none; border-top:1px solid var(--grey2); margin:2rem 0; }
+.enfant-block { background:var(--grey); border:1px solid var(--red); padding:1.2rem 1.5rem; border-radius:2px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
+.enfant-block h3 { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--red); }
+.enfant-block p { font-size:0.95rem; color:rgba(255,255,255,0.65); max-width:480px; }
+.enfant-block .price { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:var(--gold); }
+.assiettes-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; }
+.assiette-card { background:var(--grey); padding:1.2rem; border-top:3px solid var(--red); border-radius:2px; }
+.assiette-card h3 { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--white); margin-bottom:0.3rem; }
+.assiette-card .price { font-family:'Bebas Neue',sans-serif; font-size:1.7rem; color:var(--gold); margin-top:0.5rem; }
+.big-highlight { background:linear-gradient(135deg,var(--red-dark),#6b0f20); border:2px solid var(--gold); padding:1.5rem; border-radius:4px; display:flex; align-items:center; gap:1.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+.big-highlight .badge { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; color:var(--gold); line-height:1; }
+.big-highlight h3 { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--white); }
+.big-highlight p { font-size:0.92rem; color:rgba(255,255,255,0.7); margin-top:0.3rem; }
+.big-highlight .price { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--gold); margin-top:0.3rem; }
+.menu-footer { background:var(--grey); text-align:center; padding:2rem 1rem 5rem; font-size:0.78rem; color:rgba(255,255,255,0.35); letter-spacing:0.1em; border-top:2px solid var(--red); }
+.menu-footer span { color:var(--gold); }
+@media(max-width:500px){ .items-grid{grid-template-columns:1fr;} nav a{font-size:0.72rem;padding:0.6rem 0.5rem;} }
+
+/* ══ BOUTON PLATS DU JOUR ══ */
+.pdj-btn-wrap { max-width:900px; margin:0 auto; padding:0 1rem; }
+.pdj-btn {
+  display:flex; align-items:center; justify-content:center; gap:0.8rem;
+  background:var(--gold); color:var(--darker);
+  font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:0.12em;
+  padding:1rem 2rem; border:none; cursor:pointer; width:100%;
+  border-radius:3px; transition:background 0.2s; margin-bottom:0;
+}
+.pdj-btn:hover { background:#e8c97a; }
+.pdj-dot { width:9px; height:9px; background:var(--red); border-radius:50%; animation:pdj-pulse 1.4s infinite; flex-shrink:0; }
+@keyframes pdj-pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.6);opacity:0.5;} }
+
+/* ══ POPUP ══ */
+@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+.popup-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:500; align-items:center; justify-content:center; padding:1rem; }
+.popup-overlay.open { display:flex; }
+.popup {
+  background: #f5f0e8;
+  border: 3px solid #8b6914;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 92vh;
+  overflow-y: auto;
+  animation: popIn 0.25s ease;
+  position: relative;
+}
+.popup::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(139,105,20,0.3);
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes popIn { from{opacity:0;transform:scale(0.93);} to{opacity:1;transform:scale(1);} }
+.popup-head {
+  background: transparent;
+  padding: 1.8rem 1.5rem 0.5rem;
+  text-align: center;
+  position: relative;
+}
+.popup-close {
+  position: absolute;
+  top: 0.8rem; right: 0.8rem;
+  background: none; border: none;
+  color: #8b6914; font-size: 1.4rem;
+  cursor: pointer; line-height: 1;
+  z-index: 2;
+}
+.popup-close:hover { color: #5a3e0a; }
+.popup-cutlery {
+  font-size: 1.4rem;
+  color: #8b6914;
+  letter-spacing: 0.3em;
+  margin-bottom: 0.3rem;
+}
+.popup-head h3 {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 3rem;
+  color: #5a3e0a;
+  line-height: 1.1;
+}
+.popup-price-badge {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: #8b6914;
+  margin: 0.4rem 0 0.8rem;
+  letter-spacing: 0.05em;
+}
+.popup-divider {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0 1.5rem; margin-bottom: 0.5rem;
+}
+.popup-divider::before, .popup-divider::after {
+  content: ''; flex: 1; height: 1px; background: #c4a44a;
+}
+.popup-divider span { color: #c4a44a; font-size: 0.7rem; }
+.popup-body { padding: 0.5rem 1.5rem 1.5rem; }
+.pdj-day {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid rgba(139,105,20,0.2);
+  text-align: center;
+}
+.pdj-day:last-child { border-bottom: none; }
+.pdj-day .day-label {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 1.9rem;
+  color: #5a3e0a;
+  line-height: 1.2;
+}
+.pdj-day .day-dish {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: #3a2a0a;
+  margin-top: 0.2rem;
+  line-height: 1.5;
+}
+.pdj-note { font-family:'Cormorant Garamond',serif; font-size:0.8rem; color:rgba(90,62,10,0.45); text-align:center; margin-top:1rem; font-style:italic; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ PAGE ACCUEIL ══════════════ -->
+<div class="page active" id="page-home">
+  <div class="home-header">
+    <h1>BYENZO</h1>
+    <p>Vos menus. En un scan.</p>
+  </div>
+  <div class="home-main">
+    <div class="home-intro">
+      <h2>Choisissez votre restaurant</h2>
+      <p>Cliquez sur un établissement pour consulter sa carte complète</p>
+    </div>
+    <div class="resto-card" onclick="showMenu()">
+      <div class="card-top">
+        <h3>Bar des Sports</h3>
+        <div class="type">Brasserie · Restaurant</div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag">Menus</span>
+          <span class="tag">Grillades</span>
+          <span class="tag">Burgers</span>
+          <span class="tag">Salades</span>
+          <span class="tag">Desserts</span>
+          <span class="tag">Crêpes</span>
+        </div>
+        <div class="card-cta">Voir la carte →</div>
+      </div>
+    </div>
+  </div>
+  <div class="home-footer"><p>© <span>BYENZO</span> · Tous droits réservés</p></div>
+</div>
+
+<!-- ══════════════ PAGE MENU ══════════════ -->
+<div class="page" id="page-menu">
+  <div class="menu-header">
+    <h1>Bar des Sports</h1>
+    <div class="tagline">La Carte</div>
+    <p class="notice">Veuillez nous informer de toute allergie à la prise de commande · Prix TTC service compris</p>
+  <a href="https://www.facebook.com/share/18M7kYayzj/?mibextid=wwXIfr" target="_blank" style="display:inline-flex;align-items:center;gap:0.6rem;background:#1877F2;color:white;text-decoration:none;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;padding:0.55rem 1.2rem;border-radius:3px;margin-top:1rem;position:relative;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    Suivez-nous sur Facebook
+  </a>
+  </div>
+  <nav>
+    <a href="#menus">Menus</a>
+    <a href="#entrees">Entrées</a>
+    <a href="#assiettes">Assiettes</a>
+    <a href="#plats">Plats</a>
+    <a href="#grillades">Grillades</a>
+    <a href="#salades">Salades</a>
+    <a href="#burgers">Burgers</a>
+    <a href="#desserts">Desserts</a>
+    <a href="#crepes">Crêpes</a>
+    <a href="#gaufres">Gaufres</a>
+  <a href="#boissons">Boissons</a>
+  </nav>
+  <button class="back-btn" onclick="showHome()">← Tous les restaurants</button>
+
+
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem;padding:0.8rem;background:var(--dark);">
+    <button onclick="setLang('fr')" id="btn-fr" style="background:var(--red);color:white;border:none;padding:0.5rem 1rem;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;cursor:pointer;border-radius:3px;">🇫🇷 Français</button>
+    <button onclick="setLang('en')" id="btn-en" style="background:var(--grey2);color:white;border:none;padding:0.5rem 1rem;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;cursor:pointer;border-radius:3px;">🇬🇧 English</button>
+    <button onclick="setLang('de')" id="btn-de" style="background:var(--grey2);color:white;border:none;padding:0.5rem 1rem;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;cursor:pointer;border-radius:3px;">🇩🇪 Deutsch</button>
+    <button onclick="setLang('it')" id="btn-it" style="background:var(--grey2);color:white;border:none;padding:0.5rem 1rem;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;cursor:pointer;border-radius:3px;">🇮🇹 Italiano</button>
+    <button onclick="setLang('no')" id="btn-no" style="background:var(--grey2);color:white;border:none;padding:0.5rem 1rem;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;cursor:pointer;border-radius:3px;">🇳🇴 Norsk</button>
+  </div>
+
+  <div id="menu-fr">
+  <!-- BOUTON PLATS DU JOUR -->
+  <div class="pdj-btn-wrap">
+    <button class="pdj-btn" onclick="openPDJ()">
+      <span class="pdj-dot"></span>
+      👆 Appuyez ici – Plats du Jour de la Semaine
+      <span class="pdj-dot"></span>
+    </button>
+  </div>
+
+  <!-- POPUP PLATS DU JOUR -->
+  <div class="popup-overlay" id="pdj-popup">
+    <div class="popup">
+      <div class="popup-head">
+        <button class="popup-close" onclick="closePDJ()">✕</button>
+        <div class="popup-cutlery">🍴</div>
+        <h3>Menu de la Semaine</h3>
+        <div class="popup-price-badge">15 €</div>
+      </div>
+      <div class="popup-divider"><span>✦</span></div>
+      <div class="popup-body">
+        <div class="pdj-day">
+          <div class="day-label">Mardi</div>
+          <div class="day-dish">Fish &amp; Chips, Sauce Tartare, Salade</div>
+        </div>
+        <div class="popup-divider"><span>✦</span></div>
+        <div class="pdj-day">
+          <div class="day-label">Mercredi</div>
+          <div class="day-dish">Porc Coco Gingembre, Riz Thaï</div>
+        </div>
+        <div class="popup-divider"><span>✦</span></div>
+        <div class="pdj-day">
+          <div class="day-label">Jeudi</div>
+          <div class="day-dish">Assiette Fraîcheur – Rosbeef, Taboulé, Salade Pomme de Terre, Salade</div>
+        </div>
+        <div class="popup-divider"><span>✦</span></div>
+        <div class="pdj-day">
+          <div class="day-label">Vendredi</div>
+          <div class="day-dish">Saumon Sauce Citron avec Linguines</div>
+        </div>
+        <p class="pdj-note">Menu susceptible de changer · Bon appétit !</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENUS -->
+  <div class="section" id="menus">
+    <div class="section-header"><h2>Nos Menus</h2><div class="line"></div></div>
+    <p class="section-sub">Uniquement le midi en semaine · Les formules sont susceptibles de varier en fonction du prix du plat du jour</p>
+    <div class="formulas">
+      <div class="formula-card"><h3>Plat du Jour</h3><div class="price">À partir de 15€00</div></div>
+      <div class="formula-card"><h3>Formule Café</h3><div class="price">21€40</div><p>Plat du jour + dessert* et café</p></div>
+      <div class="formula-card"><h3>Formule 1</h3><div class="price">20€00</div><p>Entrée* <em>ou</em> dessert**, et plat du jour</p></div>
+      <div class="formula-card"><h3>Formule 2</h3><div class="price">25€00</div><p>Entrée*, plat du jour et dessert**</p></div>
+    </div>
+    <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:0.8rem;">* Entrées selon les envies du Chef · ** Coupe 2 boules de glace et Chantilly ou crème brûlée ou gaufre ou crêpe</p>
+    <hr class="divider">
+    <div class="enfant-block">
+      <div>
+        <h3>Menu Enfant</h3>
+        <p>Petit haché / Frites <em>ou</em> Tenders / Frites <em>ou</em> Petite Bolo <em>ou</em> Petite Carbo<br>+ 1 boule de glace <em>ou</em> 1 compote de fruits · Petit sirop ou Caprisun</p>
+      </div>
+      <div class="price">9€00</div>
+    </div>
+  </div>
+
+  <!-- ENTRÉES -->
+  <div class="section" id="entrees">
+    <div class="section-header"><h2>Nos Entrées</h2><div class="line"></div></div>
+    <div class="items-grid">
+      <div class="item"><div class="item-info"><div class="item-name">Œufs Mayonnaise</div></div><div class="item-price">6€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Tomates, Thon, Oignons</div></div><div class="item-price">8€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Foie Gras</div><div class="item-desc">Avec toasts grillés et confiture de figues</div></div><div class="item-price">17€50</div></div>
+    </div>
+  </div>
+
+  <!-- ASSIETTES -->
+  <div class="section" id="assiettes">
+    <div class="section-header"><h2>Nos Assiettes à Partager</h2><div class="line"></div></div>
+    <div class="assiettes-grid">
+      <div class="assiette-card"><h3>Assiette de Charcuterie</h3><div class="price">13€50</div></div>
+      <div class="assiette-card"><h3>Assiette de Charcuterie + Fromage</h3><div class="price">22€00</div></div>
+    </div>
+  </div>
+
+  <!-- PLATS -->
+  <div class="section" id="plats">
+    <div class="section-header"><h2>Nos Plats</h2><div class="line"></div></div>
+    <div class="items-grid">
+      <div class="item"><div class="item-info"><div class="item-name">Pâtes Carbonara ou Bolognaise</div></div><div class="item-price">11€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Pâtes Sauce Tomate</div></div><div class="item-price">8€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Tartare de Bœuf non préparé</div><div class="item-desc">Frites, salade</div></div><div class="item-price">18€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Tartare de Bœuf préparé ou poêlé</div><div class="item-desc">Frites, salade</div></div><div class="item-price">19€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Tartare à l'Italienne</div><div class="item-desc">Bœuf, copeaux de parmesan, ail, pignons, oignons, huile olive, olives, vinaigre balsamique, moutarde, tomates séchées · Frites, salade</div></div><div class="item-price">21€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Fish &amp; Chips</div><div class="item-desc">Sauce tartare et barbecue · Frites, salade</div></div><div class="item-price">15€50</div></div>
+    </div>
+  </div>
+
+  <!-- GRILLADES -->
+  <div class="section" id="grillades">
+    <div class="section-header"><h2>Nos Grillades</h2><div class="line"></div></div>
+    <p class="section-sub">Frites + Salade · Supp. sauce 1€50</p>
+    <div class="items-grid">
+      <div class="item"><div class="item-info"><div class="item-name">Tenders (300g)</div></div><div class="item-price">15€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Andouillette</div></div><div class="item-price">14€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Bavette (200g)</div></div><div class="item-price">Au cours</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Double Haché (300g)</div></div><div class="item-price">17€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Double Haché à Cheval (300g)</div></div><div class="item-price">19€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Entrecôte (300g)</div></div><div class="item-price">Au cours</div></div>
+    </div>
+    <hr class="divider">
+    <p class="section-sub">Selon saison</p>
+    <div class="items-grid">
+      <div class="item"><div class="item-info"><div class="item-name">Tomate Mozzarella Burrata</div><div class="item-desc">Tomate, mozzarella, huile basilic, jambon cru, oignon rouge, copeaux de Parmesan, pignons</div></div><div class="item-price">18€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">L'Italienne</div><div class="item-desc">Jambon cru, copeaux Parmesan, tomates, pignons, huile basilic et crème balsamique</div></div><div class="item-price">17€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">La BDS</div><div class="item-desc">Jambon cru, jambon blanc, Rosette, Mortadelle, Coppa, fruits selon saison, Brie, Roquefort, œuf mayonnaise</div></div><div class="item-price">20€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">La Foie Gras</div><div class="item-desc">Foie gras, confiture de figue, toast grillés, sur lit de salade</div></div><div class="item-price">21€50</div></div>
+    </div>
+  </div>
+
+  <!-- SALADES -->
+  <div class="section" id="salades">
+    <div class="section-header"><h2>Nos Salades</h2><div class="line"></div></div>
+    <div class="items-grid">
+      <div class="item"><div class="item-info"><div class="item-name">Salade Verte</div></div><div class="item-price">2€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Salade Œufs Durs</div><div class="item-desc">Salade, œufs, pignons, vinaigrette</div></div><div class="item-price">7€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">La César</div><div class="item-desc">Salade verte, tomates, champignons, concombre, Parmesan, poulet pané aux corn flakes, oignons frits, oignons rouges, pommes</div></div><div class="item-price">16€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">La Chevrette</div><div class="item-desc">Chèvre chaud et magret de canard fumé</div></div><div class="item-price">15€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">La Thaï</div><div class="item-desc">Bavette tranchée ou Tenders ou Fish, salade, concombre, carotte, soja, betterave, champignons, cacahuètes, graines de sésame, sauce thaï sucrée salée épicée</div></div><div class="item-price">17€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">La Foie Gras</div><div class="item-desc">Foie gras, confiture de figue, toast grillés, sur lit de salade</div></div><div class="item-price">21€50</div></div>
+    </div>
+  </div>
+
+  <!-- BURGERS -->
+  <div class="section" id="burgers">
+    <div class="section-header"><h2>Nos Burgers</h2><div class="line"></div></div>
+    <p class="section-sub">Servis avec frites &amp; salade · Haché « façon bouchère » 150g</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;">
+      <div class="big-highlight" style="margin-bottom:0;">
+        <div>
+          <div class="badge">BIG</div>
+          <h3>Burger BIG</h3>
+          <p>2 hachés + galette de pomme de terre</p>
+          <div class="price">20€00</div>
+        </div>
+      </div>
+      <div class="big-highlight" style="margin-bottom:0;">
+        <div>
+          <div class="badge">XXL</div>
+          <h3>Burger XXL</h3>
+          <p>3 steaks hachés de 150g</p>
+          <div class="price">25€00</div>
+        </div>
+      </div>
+    </div>
+    <div class="items-grid">
+      <div class="item"><div class="item-info"><div class="item-name">Burger Classique</div><div class="item-desc">Haché façon bouchère 150g, tomate, oignons, cheddar, salade</div></div><div class="item-price">15€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Burger du Moment</div><div class="item-desc">Demandez la suggestion du chef</div></div><div class="item-price">—</div></div>
+    </div>
+  </div>
+
+  <!-- FROMAGE -->
+  <div class="section" id="fromage">
+    <div class="section-header"><h2>Le Fromage</h2><div class="line"></div></div>
+    <div class="items-grid">
+      <div class="item"><div class="item-info"><div class="item-name">L'assiette</div></div><div class="item-price">7€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">L'assiette + 1 verre de vin rouge</div></div><div class="item-price">9€00</div></div>
+    </div>
+  </div>
+
+  <!-- DESSERTS -->
+  <div class="section" id="desserts">
+    <div class="section-header"><h2>Nos Desserts</h2><div class="line"></div></div>
+    <div class="items-grid" style="margin-bottom:1.2rem;">
+      <div class="item"><div class="item-info"><div class="item-name">Crème Brûlée</div></div><div class="item-price">5€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Tiramisu</div></div><div class="item-price">5€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Tarte du Jour</div></div><div class="item-price">6€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Fondant au Chocolat</div><div class="item-desc">Cœur fondant chocolat ou caramel beurre salé</div></div><div class="item-price">6€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Tarte Tatin</div><div class="item-desc">Chantilly</div></div><div class="item-price">6€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Tarte Tatin + Boule</div><div class="item-desc">Chantilly, boule crème glacée vanille</div></div><div class="item-price">7€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Café Gourmand</div><div class="item-desc">Café, 3 mini-pâtisseries, Chantilly</div></div><div class="item-price">8€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Hérisson</div><div class="item-desc">Crème glacée chocolat, vanille, meringue, pignons, Chantilly, chocolat chaud</div></div><div class="item-price">8€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Pavlova aux Fruits</div><div class="item-desc">Chantilly, meringue, glace passion, fruits de saison</div></div><div class="item-price">8€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Profiteroles</div><div class="item-desc">Sauce chocolat, Chantilly</div></div><div class="item-price">8€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Supp. Chantilly</div></div><div class="item-price">1€00</div></div>
+    </div>
+    <p class="section-sub" style="margin-bottom:0.5rem;">Glaces &amp; Sorbets</p>
+    <div class="items-grid">
+      <div class="item"><div class="item-info"><div class="item-name">Glace – 1 boule</div><div class="item-desc">Café, Chocolat, Vanille, Menthe/chocolat, Rhum Raisins, Noix de coco, Caramel fleur de sel</div></div><div class="item-price">1€70</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Glace – 2 boules</div></div><div class="item-price">3€20</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Glace – 3 boules</div></div><div class="item-price">4€70</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Sorbets</div><div class="item-desc">Cassis, Citron, Framboise, Fraise, Fruit de la passion, Pêche, Poire William</div></div><div class="item-price">—</div></div>
+    </div>
+  </div>
+
+  <!-- CRÊPES -->
+  <div class="section" id="crepes">
+    <div class="section-header"><h2>Nos Crêpes</h2><div class="line"></div></div>
+    <div class="items-grid">
+      <div class="item"><div class="item-info"><div class="item-name">Sucre</div></div><div class="item-price">2€70</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Pâte à Tartiner</div></div><div class="item-price">4€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Crème de Marrons</div></div><div class="item-price">4€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Spéculoos</div></div><div class="item-price">4€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Supp. Chantilly</div></div><div class="item-price">1€00</div></div>
+    </div>
+  </div>
+
+  <!-- GAUFRES -->
+  <div class="section" id="gaufres">
+    <div class="section-header"><h2>Nos Gaufres</h2><div class="line"></div></div>
+    <div class="items-grid">
+      <div class="item"><div class="item-info"><div class="item-name">Sucre</div></div><div class="item-price">3€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Chocolat Chaud</div></div><div class="item-price">4€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Pâte à Tartiner</div></div><div class="item-price">4€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Crème de Marrons</div></div><div class="item-price">4€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Supp. Chantilly</div></div><div class="item-price">1€00</div></div>
+    </div>
+  </div>
+
+
+  <!-- BOISSONS -->
+  <div class="section" id="boissons">
+    <div class="section-header"><h2>Nos Boissons</h2><div class="line"></div></div>
+
+    <!-- Boissons Fraîches -->
+    <p class="section-sub">Boissons Fraîches</p>
+    <div class="items-grid" style="margin-bottom:1.2rem;">
+      <div class="item"><div class="item-info"><div class="item-name">Soda</div><div class="item-desc">33cl</div></div><div class="item-price">3€40</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Sirop</div><div class="item-desc">25cl</div></div><div class="item-price">2€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Petit Sirop</div><div class="item-desc">15cl</div></div><div class="item-price">1€20</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Eau Vittel / San Pellegrino</div><div class="item-desc">25cl</div></div><div class="item-price">2€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Eau Vittel / San Pellegrino</div><div class="item-desc">50cl</div></div><div class="item-price">3€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Eau Vittel / San Pellegrino</div><div class="item-desc">1L</div></div><div class="item-price">5€00</div></div>
+    </div>
+
+    <!-- Boissons Chaudes -->
+    <p class="section-sub">Boissons Chaudes</p>
+    <div class="items-grid" style="margin-bottom:1.2rem;">
+      <div class="item"><div class="item-info"><div class="item-name">Café</div></div><div class="item-price">1€40</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Déca</div></div><div class="item-price">1€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Noisette</div></div><div class="item-price">1€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Petit Chaud</div></div><div class="item-price">2€20</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Grand Chaud</div></div><div class="item-price">2€70</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Thé / Infusion</div></div><div class="item-price">2€70</div></div>
+    </div>
+
+    <!-- Pressions -->
+    <p class="section-sub">Nos Pressions</p>
+    <div class="items-grid" style="margin-bottom:1.2rem;">
+      <div class="item"><div class="item-info"><div class="item-name">Bière du Mois</div><div class="item-desc">25cl</div></div><div class="item-price">3€80</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Bière du Mois</div><div class="item-desc">50cl</div></div><div class="item-price">7€10</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Bière du Mois</div><div class="item-desc">1L</div></div><div class="item-price">14€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Coq Hardi</div><div class="item-desc">25cl</div></div><div class="item-price">2€60</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Coq Hardi</div><div class="item-desc">50cl</div></div><div class="item-price">4€70</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Coq Hardi</div><div class="item-desc">1L</div></div><div class="item-price">9€40</div></div>
+    </div>
+
+    <!-- Vins Rosés -->
+    <p class="section-sub">Nos Vins Rosés</p>
+    <div class="items-grid" style="margin-bottom:1.2rem;">
+      <div class="item"><div class="item-info"><div class="item-name">Vin du Pays – au verre</div><div class="item-desc">19cl</div></div><div class="item-price">2€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Vin du Pays</div><div class="item-desc">25cl</div></div><div class="item-price">2€70</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Vin du Pays</div><div class="item-desc">50cl</div></div><div class="item-price">5€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Vin du Pays</div><div class="item-desc">1L</div></div><div class="item-price">9€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Domaine La Figuière – Figuière IGP</div><div class="item-desc">Côtes de Provence · 75cl</div></div><div class="item-price">19€90</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Domaine Vallombrosa – Cuvée Prunelle AOC</div><div class="item-desc">Côtes de Provence · 75cl</div></div><div class="item-price">19€90</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Domaine Rimauresq</div><div class="item-desc">75cl</div></div><div class="item-price">35€00</div></div>
+    </div>
+
+    <!-- Vins Blancs -->
+    <p class="section-sub">Nos Vins Blancs</p>
+    <div class="items-grid" style="margin-bottom:1.2rem;">
+      <div class="item"><div class="item-info"><div class="item-name">Vin du Pays – au verre</div><div class="item-desc">19cl</div></div><div class="item-price">2€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Vin du Pays</div><div class="item-desc">25cl</div></div><div class="item-price">2€70</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Vin du Pays</div><div class="item-desc">50cl</div></div><div class="item-price">5€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Vin du Pays</div><div class="item-desc">1L</div></div><div class="item-price">9€60</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Domaine Vallombrosa – Cuvée Prunelle AOC</div><div class="item-desc">Côtes de Provence · 75cl</div></div><div class="item-price">19€90</div></div>
+    </div>
+
+    <!-- Vins Rouges -->
+    <p class="section-sub">Nos Vins Rouges</p>
+    <div class="items-grid" style="margin-bottom:1.2rem;">
+      <div class="item"><div class="item-info"><div class="item-name">Vin du Pays – au verre</div><div class="item-desc">19cl</div></div><div class="item-price">2€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Vin du Pays</div><div class="item-desc">25cl</div></div><div class="item-price">2€70</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Vin du Pays</div><div class="item-desc">50cl</div></div><div class="item-price">5€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Vin du Pays</div><div class="item-desc">1L</div></div><div class="item-price">9€60</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Rimauresq</div><div class="item-desc">Côtes de Provence · 75cl</div></div><div class="item-price">35€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Domaine La Figuière – Figuière IGP</div><div class="item-desc">Côtes de Provence · 75cl</div></div><div class="item-price">19€90</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Domaine Vallombrosa – Cuvée Prunelle AOC</div><div class="item-desc">Côtes de Provence · 75cl</div></div><div class="item-price">19€90</div></div>
+    </div>
+
+    <!-- Vins Pétillants & Champagnes -->
+    <p class="section-sub">Vins Pétillants &amp; Champagnes</p>
+    <div class="items-grid" style="margin-bottom:1.2rem;">
+      <div class="item"><div class="item-info"><div class="item-name">Prosecco – au verre</div></div><div class="item-price">4€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Prosecco – la bouteille</div><div class="item-desc">75cl</div></div><div class="item-price">16€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Champagne</div><div class="item-desc">75cl</div></div><div class="item-price">60€00</div></div>
+    </div>
+
+    <!-- Cocktails -->
+    <p class="section-sub">Nos Cocktails</p>
+    <div class="items-grid">
+      <div class="item"><div class="item-info"><div class="item-name">Punch</div></div><div class="item-price">3€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Spritz</div></div><div class="item-price">4€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Américano</div></div><div class="item-price">5€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Tequila Sunrise</div></div><div class="item-price">6€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Daiquiri</div></div><div class="item-price">6€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Gin Fizz</div></div><div class="item-price">5€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Bloody Mary</div></div><div class="item-price">6€50</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Mojito</div></div><div class="item-price">7€00</div></div>
+      <div class="item"><div class="item-info"><div class="item-name">Pina Colada</div></div><div class="item-price">8€50</div></div>
+    </div>
+  </div>
+
+
+  </div>
+  <!-- ══ ENGLISH MENU ══ -->
+  <div id="menu-en" style="display:none;">
+
+    <div class="section">
+      <div class="section-header"><h2>Our Set Menus</h2><div class="line"></div></div>
+      <p class="section-sub">Weekday lunchtimes only · Prices may vary depending on the daily special</p>
+      <div class="formulas">
+        <div class="formula-card"><h3>Daily Special</h3><div class="price">From 15€00</div></div>
+        <div class="formula-card"><h3>Coffee Menu</h3><div class="price">21€40</div><p>Daily special + dessert* and coffee</p></div>
+        <div class="formula-card"><h3>Menu 1</h3><div class="price">20€00</div><p>Starter* or dessert**, and daily special</p></div>
+        <div class="formula-card"><h3>Menu 2</h3><div class="price">25€00</div><p>Starter*, daily special and dessert**</p></div>
+      </div>
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:0.8rem;">* Starters at Chef's choice · ** 2 scoops ice cream with whipped cream, crème brûlée, waffle or crêpe</p>
+      <hr class="divider">
+      <div class="enfant-block">
+        <div>
+          <h3>Children's Menu</h3>
+          <p>Mini burger / Chips or Tenders / Chips or Small Bolognese or Small Carbonara<br>+ 1 scoop ice cream or 1 fruit compote · Small syrup or Caprisun</p>
+        </div>
+        <div class="price">9€00</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>Starters</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Eggs Mayonnaise</div></div><div class="item-price">6€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tomatoes, Tuna, Onions</div></div><div class="item-price">8€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Foie Gras</div><div class="item-desc">With toasted bread and fig jam</div></div><div class="item-price">17€50</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>Sharing Platters</h2><div class="line"></div></div>
+      <div class="assiettes-grid">
+        <div class="assiette-card"><h3>Charcuterie Board</h3><div class="price">13€50</div></div>
+        <div class="assiette-card"><h3>Charcuterie &amp; Cheese Board</h3><div class="price">20€50</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>Main Dishes</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Pasta Carbonara or Bolognese</div></div><div class="item-price">11€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Pasta Tomato Sauce</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Beef Tartare – not prepared</div><div class="item-desc">Chips, salad</div></div><div class="item-price">18€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Beef Tartare – prepared or pan-fried</div><div class="item-desc">Chips, salad</div></div><div class="item-price">19€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Italian Tartare</div><div class="item-desc">Beef, parmesan shavings, garlic, pine nuts, onions, olive oil, olives, balsamic vinegar, mustard, sundried tomatoes · Chips, salad</div></div><div class="item-price">21€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Fish &amp; Chips</div><div class="item-desc">Tartare and BBQ sauce · Chips, salad</div></div><div class="item-price">15€50</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>Grills</h2><div class="line"></div></div>
+      <p class="section-sub">Chips + Salad · Extra sauce 1€50</p>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Chicken Tenders (300g)</div></div><div class="item-price">15€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Andouillette Sausage</div></div><div class="item-price">14€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Flank Steak (200g)</div></div><div class="item-price">16€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Double Beef Patty (300g)</div></div><div class="item-price">17€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Double Beef Patty on horseback (300g)</div></div><div class="item-price">19€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Ribeye Steak (300g)</div></div><div class="item-price">22€50</div></div>
+      </div>
+      <hr class="divider">
+      <p class="section-sub">Seasonal</p>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Tomato Mozzarella Burrata</div><div class="item-desc">Tomato, mozzarella, basil oil, cured ham, red onion, parmesan shavings, pine nuts</div></div><div class="item-price">18€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">The Italian</div><div class="item-desc">Cured ham, parmesan shavings, tomatoes, pine nuts, basil oil and balsamic cream</div></div><div class="item-price">17€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">The BDS</div><div class="item-desc">Cured ham, cooked ham, Rosette, Mortadella, Coppa, seasonal fruits, Brie, Roquefort, egg mayonnaise</div></div><div class="item-price">20€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Foie Gras</div><div class="item-desc">Foie gras, fig jam, toasted bread, on a bed of salad</div></div><div class="item-price">21€50</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>Salads</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Green Salad</div></div><div class="item-price">2€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Hard-boiled Egg Salad</div><div class="item-desc">Salad, eggs, pine nuts, vinaigrette</div></div><div class="item-price">7€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Caesar Salad</div><div class="item-desc">Green salad, tomatoes, mushrooms, cucumber, parmesan, cornflake chicken, fried onions, red onions, apples</div></div><div class="item-price">16€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Goat Cheese Salad</div><div class="item-desc">Warm goat cheese toast and smoked duck breast</div></div><div class="item-price">15€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Thai Salad</div><div class="item-desc">Sliced steak or Tenders or Fish, salad, cucumber, carrot, soy, beetroot, mushrooms, peanuts, sesame seeds, sweet spicy Thai sauce</div></div><div class="item-price">17€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Foie Gras Salad</div><div class="item-desc">Foie gras, fig jam, toasted bread, on a bed of salad</div></div><div class="item-price">21€50</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>Burgers</h2><div class="line"></div></div>
+      <p class="section-sub">Served with chips &amp; salad · Butcher-style beef patty 150g</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;">
+        <div class="big-highlight" style="margin-bottom:0;">
+          <div><div class="badge">BIG</div><h3>BIG Burger</h3><p>2 patties + potato cake</p><div class="price">20€00</div></div>
+        </div>
+        <div class="big-highlight" style="margin-bottom:0;">
+          <div><div class="badge">XXL</div><h3>XXL Burger</h3><p>3 beef patties 150g</p><div class="price">25€00</div></div>
+        </div>
+      </div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Classic Burger</div><div class="item-desc">Beef patty 150g, tomato, onions, cheddar, salad</div></div><div class="item-price">15€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Burger of the Moment</div><div class="item-desc">Ask for the chef's suggestion</div></div><div class="item-price">—</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>The Cheese</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">The platter</div></div><div class="item-price">7€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">The platter + 1 glass of red wine</div></div><div class="item-price">9€00</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>Desserts</h2><div class="line"></div></div>
+      <div class="items-grid" style="margin-bottom:1.2rem;">
+        <div class="item"><div class="item-info"><div class="item-name">Crème Brûlée</div></div><div class="item-price">5€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tiramisu</div></div><div class="item-price">5€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tart of the Day</div></div><div class="item-price">6€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Chocolate Fondant</div><div class="item-desc">Molten chocolate or salted caramel</div></div><div class="item-price">6€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tarte Tatin</div><div class="item-desc">Whipped cream</div></div><div class="item-price">6€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tarte Tatin + Scoop</div><div class="item-desc">Whipped cream, vanilla ice cream</div></div><div class="item-price">7€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Gourmet Coffee</div><div class="item-desc">Coffee, 3 mini pastries, whipped cream</div></div><div class="item-price">8€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Hedgehog</div><div class="item-desc">Chocolate ice cream, vanilla, meringue, pine nuts, whipped cream, hot chocolate</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Fruit Pavlova</div><div class="item-desc">Whipped cream, meringue, passion fruit ice cream, seasonal fruits</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Profiteroles</div><div class="item-desc">Chocolate sauce, whipped cream</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Extra Whipped Cream</div></div><div class="item-price">1€00</div></div>
+      </div>
+      <p class="section-sub" style="margin-bottom:0.5rem;">Ice Creams &amp; Sorbets</p>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Ice Cream – 1 scoop</div><div class="item-desc">Coffee, Chocolate, Vanilla, Mint/choc, Rum Raisin, Coconut, Salted Caramel</div></div><div class="item-price">1€70</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Ice Cream – 2 scoops</div></div><div class="item-price">3€20</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Ice Cream – 3 scoops</div></div><div class="item-price">4€70</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Sorbets</div><div class="item-desc">Blackcurrant, Lemon, Raspberry, Strawberry, Passion Fruit, Peach, Pear William</div></div><div class="item-price">—</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>Crêpes</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Sugar</div></div><div class="item-price">2€70</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Chocolate Spread</div></div><div class="item-price">4€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Chestnut Cream</div></div><div class="item-price">4€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Speculoos</div></div><div class="item-price">4€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Extra Whipped Cream</div></div><div class="item-price">1€00</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>Waffles</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Sugar</div></div><div class="item-price">3€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Hot Chocolate</div></div><div class="item-price">4€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Chocolate Spread</div></div><div class="item-price">4€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Chestnut Cream</div></div><div class="item-price">4€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Extra Whipped Cream</div></div><div class="item-price">1€00</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>Drinks</h2><div class="line"></div></div>
+      <p class="section-sub">Cold Drinks</p>
+      <div class="items-grid" style="margin-bottom:1.2rem;">
+        <div class="item"><div class="item-info"><div class="item-name">Soda</div><div class="item-desc">33cl</div></div><div class="item-price">3€40</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Syrup</div><div class="item-desc">25cl</div></div><div class="item-price">2€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Small Syrup</div><div class="item-desc">15cl</div></div><div class="item-price">1€20</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Still / Sparkling Water</div><div class="item-desc">25cl</div></div><div class="item-price">2€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Still / Sparkling Water</div><div class="item-desc">50cl</div></div><div class="item-price">3€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Still / Sparkling Water</div><div class="item-desc">1L</div></div><div class="item-price">5€00</div></div>
+      </div>
+      <p class="section-sub">Hot Drinks</p>
+      <div class="items-grid" style="margin-bottom:1.2rem;">
+        <div class="item"><div class="item-info"><div class="item-name">Espresso</div></div><div class="item-price">1€40</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Decaf</div></div><div class="item-price">1€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Macchiato</div></div><div class="item-price">1€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Small Hot Chocolate</div></div><div class="item-price">2€20</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Large Hot Chocolate</div></div><div class="item-price">2€70</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tea / Herbal Tea</div></div><div class="item-price">2€70</div></div>
+      </div>
+      <p class="section-sub">Draught Beer</p>
+      <div class="items-grid" style="margin-bottom:1.2rem;">
+        <div class="item"><div class="item-info"><div class="item-name">Beer of the Month</div><div class="item-desc">25cl</div></div><div class="item-price">3€80</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Beer of the Month</div><div class="item-desc">50cl</div></div><div class="item-price">7€10</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Beer of the Month</div><div class="item-desc">1L</div></div><div class="item-price">14€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Coq Hardi</div><div class="item-desc">25cl</div></div><div class="item-price">2€60</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Coq Hardi</div><div class="item-desc">50cl</div></div><div class="item-price">4€70</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Coq Hardi</div><div class="item-desc">1L</div></div><div class="item-price">9€40</div></div>
+      </div>
+      <p class="section-sub">Wines &amp; Champagne</p>
+      <div class="items-grid" style="margin-bottom:1.2rem;">
+        <div class="item"><div class="item-info"><div class="item-name">House Rosé – glass</div><div class="item-desc">19cl</div></div><div class="item-price">2€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">House Rosé</div><div class="item-desc">25cl</div></div><div class="item-price">2€70</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">House White – glass</div><div class="item-desc">19cl</div></div><div class="item-price">2€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">House Red – glass</div><div class="item-desc">19cl</div></div><div class="item-price">2€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Prosecco – glass</div></div><div class="item-price">4€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Prosecco – bottle</div><div class="item-desc">75cl</div></div><div class="item-price">16€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Champagne</div><div class="item-desc">75cl</div></div><div class="item-price">60€00</div></div>
+      </div>
+      <p class="section-sub">Cocktails</p>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Punch</div></div><div class="item-price">3€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Spritz</div></div><div class="item-price">4€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Americano</div></div><div class="item-price">5€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tequila Sunrise</div></div><div class="item-price">6€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Daiquiri</div></div><div class="item-price">6€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Gin Fizz</div></div><div class="item-price">5€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Bloody Mary</div></div><div class="item-price">6€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Mojito</div></div><div class="item-price">7€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Pina Colada</div></div><div class="item-price">8€50</div></div>
+      </div>
+    </div>
+
+  </div>
+  <!-- ══ END ENGLISH MENU ══ -->
+
+
+  <!-- ══ GERMAN MENU ══ -->
+  <div id="menu-de" style="display:none;">
+    <div class="section">
+      <div class="section-header"><h2>Unsere Menüs</h2><div class="line"></div></div>
+      <p class="section-sub">Nur mittags unter der Woche · Preise können je nach Tagesgericht variieren</p>
+      <div class="formulas">
+        <div class="formula-card"><h3>Tagesgericht</h3><div class="price">Ab 15€00</div></div>
+        <div class="formula-card"><h3>Kaffee-Menü</h3><div class="price">21€40</div><p>Tagesgericht + Dessert* und Kaffee</p></div>
+        <div class="formula-card"><h3>Menü 1</h3><div class="price">20€00</div><p>Vorspeise* oder Dessert** und Tagesgericht</p></div>
+        <div class="formula-card"><h3>Menü 2</h3><div class="price">25€00</div><p>Vorspeise*, Tagesgericht und Dessert**</p></div>
+      </div>
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:0.8rem;">* Vorspeisen nach Wahl des Küchenchefs · ** 2 Kugeln Eis mit Sahne, Crème brûlée, Waffel oder Crêpe</p>
+      <hr class="divider">
+      <div class="enfant-block">
+        <div><h3>Kindermenü</h3><p>Mini-Burger / Pommes oder Tenders / Pommes oder kleine Bolognese oder kleine Carbonara<br>+ 1 Kugel Eis oder 1 Fruchtmus · Kleiner Sirup oder Caprisun</p></div>
+        <div class="price">9€00</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Vorspeisen</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Eier Mayonnaise</div></div><div class="item-price">6€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tomaten, Thunfisch, Zwiebeln</div></div><div class="item-price">8€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Foie Gras</div><div class="item-desc">Mit geröstetem Brot und Feigenmarmelade</div></div><div class="item-price">17€50</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Zum Teilen</h2><div class="line"></div></div>
+      <div class="assiettes-grid">
+        <div class="assiette-card"><h3>Wurstteller</h3><div class="price">13€50</div></div>
+        <div class="assiette-card"><h3>Wurst- &amp; Käseteller</h3><div class="price">20€50</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Hauptgerichte</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Pasta Carbonara oder Bolognese</div></div><div class="item-price">11€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Pasta Tomatensauce</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Rindertatar – nicht zubereitet</div><div class="item-desc">Pommes, Salat</div></div><div class="item-price">18€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Rindertatar – zubereitet oder gebraten</div><div class="item-desc">Pommes, Salat</div></div><div class="item-price">19€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Italienisches Tatar</div><div class="item-desc">Rind, Parmesan, Knoblauch, Pinienkerne, Zwiebeln, Olivenöl, Oliven, Balsamico, Senf, getrocknete Tomaten · Pommes, Salat</div></div><div class="item-price">21€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Fish &amp; Chips</div><div class="item-desc">Tartar- und BBQ-Sauce · Pommes, Salat</div></div><div class="item-price">15€50</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Vom Grill</h2><div class="line"></div></div>
+      <p class="section-sub">Pommes + Salat · Soße extra 1€50</p>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Chicken Tenders (300g)</div></div><div class="item-price">15€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Andouillette-Wurst</div></div><div class="item-price">14€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Flanksteak (200g)</div></div><div class="item-price">16€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Doppeltes Hacksteak (300g)</div></div><div class="item-price">17€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Doppeltes Hacksteak zu Pferd (300g)</div></div><div class="item-price">19€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Entrecôte (300g)</div></div><div class="item-price">Au cours</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Salate</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Grüner Salat</div></div><div class="item-price">2€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Hartes-Ei-Salat</div><div class="item-desc">Salat, Eier, Pinienkerne, Vinaigrette</div></div><div class="item-price">7€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">César-Salat</div><div class="item-desc">Grüner Salat, Tomaten, Champignons, Gurke, Parmesan, paniertes Hähnchen, gebratene Zwiebeln, rote Zwiebeln, Äpfel</div></div><div class="item-price">16€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Ziegenkäse-Salat</div><div class="item-desc">Warmer Ziegenkäsetoast und geräucherte Entenbrust</div></div><div class="item-price">15€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Thai-Salat</div><div class="item-desc">Rind oder Tenders oder Fisch, Salat, Gurke, Karotte, Soja, Rübe, Champignons, Erdnüsse, Sesam, süß-scharfe Thai-Sauce</div></div><div class="item-price">17€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Foie-Gras-Salat</div><div class="item-desc">Foie gras, Feigenmarmelade, geröstetes Brot, auf Salatbett</div></div><div class="item-price">21€50</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Burger</h2><div class="line"></div></div>
+      <p class="section-sub">Mit Pommes &amp; Salat · Metzger-Hacksteak 150g</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;">
+        <div class="big-highlight" style="margin-bottom:0;"><div><div class="badge">BIG</div><h3>BIG Burger</h3><p>2 Hacksteaks + Kartoffelkuchen</p><div class="price">20€00</div></div></div>
+        <div class="big-highlight" style="margin-bottom:0;"><div><div class="badge">XXL</div><h3>XXL Burger</h3><p>3 Hacksteaks à 150g</p><div class="price">25€00</div></div></div>
+      </div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Klassischer Burger</div><div class="item-desc">Hacksteak 150g, Tomate, Zwiebeln, Cheddar, Salat</div></div><div class="item-price">15€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Burger des Tages</div><div class="item-desc">Fragen Sie nach dem Vorschlag des Küchenchefs</div></div><div class="item-price">—</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Desserts</h2><div class="line"></div></div>
+      <div class="items-grid" style="margin-bottom:1.2rem;">
+        <div class="item"><div class="item-info"><div class="item-name">Crème Brûlée</div></div><div class="item-price">5€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tiramisu</div></div><div class="item-price">5€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tagesstarte</div></div><div class="item-price">6€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Schokoladenfondant</div><div class="item-desc">Flüssige Schokolade oder gesalzenes Karamell</div></div><div class="item-price">6€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tarte Tatin</div><div class="item-desc">Schlagsahne</div></div><div class="item-price">6€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tarte Tatin + Kugel</div><div class="item-desc">Schlagsahne, Vanilleeis</div></div><div class="item-price">7€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Gourmet-Kaffee</div><div class="item-desc">Kaffee, 3 Mini-Gebäck, Schlagsahne</div></div><div class="item-price">8€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Igel</div><div class="item-desc">Schokoladeneis, Vanille, Baiser, Pinienkerne, Sahne, heißer Kakao</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Pavlova mit Früchten</div><div class="item-desc">Schlagsahne, Baiser, Passionsfruchteis, Saisonfrüchte</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Profiteroles</div><div class="item-desc">Schokoladensauce, Schlagsahne</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Eis – 1 Kugel</div><div class="item-desc">Kaffee, Schokolade, Vanille, Minze/Schoko, Rum-Rosinen, Kokosnuss, Salzkaramell</div></div><div class="item-price">1€70</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Eis – 2 Kugeln</div></div><div class="item-price">3€20</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Eis – 3 Kugeln</div></div><div class="item-price">4€70</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Crêpes &amp; Waffeln</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Crêpe Zucker</div></div><div class="item-price">2€70</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Crêpe Schokoladencreme</div></div><div class="item-price">4€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Waffel Zucker</div></div><div class="item-price">3€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Waffel heißer Kakao</div></div><div class="item-price">4€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Extra Schlagsahne</div></div><div class="item-price">1€00</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Getränke</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Softdrink (33cl)</div></div><div class="item-price">3€40</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Sirup (25cl)</div></div><div class="item-price">2€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Wasser (25cl)</div></div><div class="item-price">2€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Espresso</div></div><div class="item-price">1€40</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Bier vom Fass (25cl)</div></div><div class="item-price">3€80</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Hausrosé – Glas (19cl)</div></div><div class="item-price">2€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Prosecco – Glas</div></div><div class="item-price">4€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Champagner (75cl)</div></div><div class="item-price">60€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Mojito</div></div><div class="item-price">7€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Spritz</div></div><div class="item-price">4€50</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ITALIAN MENU ══ -->
+  <div id="menu-it" style="display:none;">
+    <div class="section">
+      <div class="section-header"><h2>I Nostri Menù</h2><div class="line"></div></div>
+      <p class="section-sub">Solo a pranzo nei giorni feriali · I prezzi possono variare in base al piatto del giorno</p>
+      <div class="formulas">
+        <div class="formula-card"><h3>Piatto del Giorno</h3><div class="price">Da 15€00</div></div>
+        <div class="formula-card"><h3>Menù Caffè</h3><div class="price">21€40</div><p>Piatto del giorno + dessert* e caffè</p></div>
+        <div class="formula-card"><h3>Menù 1</h3><div class="price">20€00</div><p>Antipasto* o dessert** e piatto del giorno</p></div>
+        <div class="formula-card"><h3>Menù 2</h3><div class="price">25€00</div><p>Antipasto*, piatto del giorno e dessert**</p></div>
+      </div>
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:0.8rem;">* Antipasti a scelta dello Chef · ** 2 palline di gelato con panna, crème brûlée, cialda o crêpe</p>
+      <hr class="divider">
+      <div class="enfant-block">
+        <div><h3>Menù Bambini</h3><p>Mini hamburger / Patatine o Tenders / Patatine o Piccola Bolognese o Piccola Carbonara<br>+ 1 pallina gelato o 1 composta di frutta · Piccolo sciroppo o Caprisun</p></div>
+        <div class="price">9€00</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Antipasti</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Uova Maionese</div></div><div class="item-price">6€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Pomodori, Tonno, Cipolle</div></div><div class="item-price">8€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Foie Gras</div><div class="item-desc">Con pane tostato e marmellata di fichi</div></div><div class="item-price">17€50</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Piatti Principali</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Pasta Carbonara o Bolognese</div></div><div class="item-price">11€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Pasta al Pomodoro</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tartare di Manzo – non preparata</div><div class="item-desc">Patatine, insalata</div></div><div class="item-price">18€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tartare di Manzo – preparata o al salto</div><div class="item-desc">Patatine, insalata</div></div><div class="item-price">19€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tartare all'Italiana</div><div class="item-desc">Manzo, scaglie di parmigiano, aglio, pinoli, cipolle, olio d'oliva, olive, aceto balsamico, senape, pomodori secchi · Patatine, insalata</div></div><div class="item-price">21€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Fish &amp; Chips</div><div class="item-desc">Salsa tartara e BBQ · Patatine, insalata</div></div><div class="item-price">15€50</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Dalla Griglia</h2><div class="line"></div></div>
+      <p class="section-sub">Patatine + Insalata · Salsa extra 1€50</p>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Tenders di Pollo (300g)</div></div><div class="item-price">15€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Andouillette</div></div><div class="item-price">14€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Bavette (200g)</div></div><div class="item-price">Au cours</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Doppio Hamburger (300g)</div></div><div class="item-price">17€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Doppio Hamburger a Cavallo (300g)</div></div><div class="item-price">19€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Entrecôte (300g)</div></div><div class="item-price">Au cours</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Insalate</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Insalata Verde</div></div><div class="item-price">2€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Insalata Uova Sode</div><div class="item-desc">Insalata, uova, pinoli, vinaigrette</div></div><div class="item-price">7€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Insalata César</div><div class="item-desc">Insalata verde, pomodori, funghi, cetriolo, parmigiano, pollo panato ai corn flakes, cipolle fritte, cipolle rosse, mele</div></div><div class="item-price">16€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Insalata di Capra</div><div class="item-desc">Toast caldo di capra e petto d'anatra affumicato</div></div><div class="item-price">15€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Insalata Thai</div><div class="item-desc">Manzo o Tenders o Pesce, insalata, cetriolo, carota, soia, barbabietola, funghi, arachidi, sesamo, salsa thai dolce-piccante</div></div><div class="item-price">17€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Insalata Foie Gras</div><div class="item-desc">Foie gras, marmellata di fichi, pane tostato, su letto d'insalata</div></div><div class="item-price">21€50</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Burger</h2><div class="line"></div></div>
+      <p class="section-sub">Serviti con patatine &amp; insalata · Hamburger stile macellaio 150g</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;">
+        <div class="big-highlight" style="margin-bottom:0;"><div><div class="badge">BIG</div><h3>BIG Burger</h3><p>2 hamburger + frittella di patate</p><div class="price">20€00</div></div></div>
+        <div class="big-highlight" style="margin-bottom:0;"><div><div class="badge">XXL</div><h3>XXL Burger</h3><p>3 hamburger da 150g</p><div class="price">25€00</div></div></div>
+      </div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Burger Classico</div><div class="item-desc">Hamburger 150g, pomodoro, cipolle, cheddar, insalata</div></div><div class="item-price">15€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Burger del Momento</div><div class="item-desc">Chiedete il suggerimento dello chef</div></div><div class="item-price">—</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Dessert</h2><div class="line"></div></div>
+      <div class="items-grid" style="margin-bottom:1.2rem;">
+        <div class="item"><div class="item-info"><div class="item-name">Crème Brûlée</div></div><div class="item-price">5€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tiramisù</div></div><div class="item-price">5€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Crostata del Giorno</div></div><div class="item-price">6€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Fondente al Cioccolato</div><div class="item-desc">Cuore di cioccolato o caramello salato</div></div><div class="item-price">6€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tarte Tatin</div><div class="item-desc">Panna montata</div></div><div class="item-price">6€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tarte Tatin + Pallina</div><div class="item-desc">Panna montata, gelato alla vaniglia</div></div><div class="item-price">7€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Caffè Gourmand</div><div class="item-desc">Caffè, 3 mini-pasticcini, panna montata</div></div><div class="item-price">8€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Riccio</div><div class="item-desc">Gelato al cioccolato, vaniglia, meringa, pinoli, panna, cioccolato caldo</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Pavlova ai Frutti</div><div class="item-desc">Panna, meringa, gelato al frutto della passione, frutti di stagione</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Profiteroles</div><div class="item-desc">Salsa al cioccolato, panna montata</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Gelato – 1 pallina</div><div class="item-desc">Caffè, Cioccolato, Vaniglia, Menta/cioccolato, Rum-Uvetta, Cocco, Caramello salato</div></div><div class="item-price">1€70</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Gelato – 2 palline</div></div><div class="item-price">3€20</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Gelato – 3 palline</div></div><div class="item-price">4€70</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Crêpes &amp; Cialde</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Crêpe Zucchero</div></div><div class="item-price">2€70</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Crêpe Crema al Cioccolato</div></div><div class="item-price">4€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Cialda Zucchero</div></div><div class="item-price">3€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Cialda Cioccolato Caldo</div></div><div class="item-price">4€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Extra Panna Montata</div></div><div class="item-price">1€00</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Bevande</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Bibita (33cl)</div></div><div class="item-price">3€40</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Sciroppo (25cl)</div></div><div class="item-price">2€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Acqua (25cl)</div></div><div class="item-price">2€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Caffè</div></div><div class="item-price">1€40</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Birra alla Spina (25cl)</div></div><div class="item-price">3€80</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Vino Rosato – bicchiere (19cl)</div></div><div class="item-price">2€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Prosecco – bicchiere</div></div><div class="item-price">4€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Champagne (75cl)</div></div><div class="item-price">60€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Mojito</div></div><div class="item-price">7€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Spritz</div></div><div class="item-price">4€50</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ NORWEGIAN MENU ══ -->
+  <div id="menu-no" style="display:none;">
+    <div class="section">
+      <div class="section-header"><h2>Våre Menyer</h2><div class="line"></div></div>
+      <p class="section-sub">Kun til lunsj på hverdager · Prisene kan variere avhengig av dagens rett</p>
+      <div class="formulas">
+        <div class="formula-card"><h3>Dagens Rett</h3><div class="price">Fra 15€00</div></div>
+        <div class="formula-card"><h3>Kaffe-Meny</h3><div class="price">21€40</div><p>Dagens rett + dessert* og kaffe</p></div>
+        <div class="formula-card"><h3>Meny 1</h3><div class="price">20€00</div><p>Forrett* eller dessert** og dagens rett</p></div>
+        <div class="formula-card"><h3>Meny 2</h3><div class="price">25€00</div><p>Forrett*, dagens rett og dessert**</p></div>
+      </div>
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:0.8rem;">* Forretter etter kokkens valg · ** 2 kuler iskrem med krem, crème brûlée, vaffel eller crêpe</p>
+      <hr class="divider">
+      <div class="enfant-block">
+        <div><h3>Barnemeny</h3><p>Mini-burger / Pommes eller Tenders / Pommes eller liten Bolognese eller liten Carbonara<br>+ 1 kule iskrem eller 1 fruktmos · Lite sirup eller Caprisun</p></div>
+        <div class="price">9€00</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Forretter</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Egg Majones</div></div><div class="item-price">6€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tomater, Tunfisk, Løk</div></div><div class="item-price">8€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Foie Gras</div><div class="item-desc">Med ristet brød og fikenmarmelade</div></div><div class="item-price">17€50</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Hovedretter</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Pasta Carbonara eller Bolognese</div></div><div class="item-price">11€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Pasta Tomatsaus</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Biff Tartare – ikke tilberedt</div><div class="item-desc">Pommes, salat</div></div><div class="item-price">18€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Biff Tartare – tilberedt eller stekt</div><div class="item-desc">Pommes, salat</div></div><div class="item-price">19€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Italiensk Tartare</div><div class="item-desc">Biff, parmesanskiver, hvitløk, pinjekjerner, løk, olivenolje, oliven, balsamico, sennep, soltørkede tomater · Pommes, salat</div></div><div class="item-price">21€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Fish &amp; Chips</div><div class="item-desc">Tartarsaus og BBQ-saus · Pommes, salat</div></div><div class="item-price">15€50</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Fra Grillen</h2><div class="line"></div></div>
+      <p class="section-sub">Pommes + Salat · Ekstra saus 1€50</p>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Kylling Tenders (300g)</div></div><div class="item-price">15€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Andouillette-pølse</div></div><div class="item-price">14€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Flankbiff (200g)</div></div><div class="item-price">16€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Dobbel Kjøttdeig (300g)</div></div><div class="item-price">17€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Dobbel Kjøttdeig til hest (300g)</div></div><div class="item-price">19€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Entrecôte (300g)</div></div><div class="item-price">Au cours</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Salater</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Grønn Salat</div></div><div class="item-price">2€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Hardkokt Egg-salat</div><div class="item-desc">Salat, egg, pinjekjerner, vinaigrette</div></div><div class="item-price">7€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">César-salat</div><div class="item-desc">Grønn salat, tomater, sopp, agurk, parmesan, panert kylling, stekt løk, rød løk, epler</div></div><div class="item-price">16€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Geiteost-salat</div><div class="item-desc">Varm geiteosttoast og røkt andebryst</div></div><div class="item-price">15€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Thai-salat</div><div class="item-desc">Biff eller Tenders eller Fisk, salat, agurk, gulrot, soya, rødbete, sopp, peanøtter, sesam, søt-sterk thai-saus</div></div><div class="item-price">17€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Foie Gras-salat</div><div class="item-desc">Foie gras, fikenmarmelade, ristet brød, på salatbunn</div></div><div class="item-price">21€50</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Burgere</h2><div class="line"></div></div>
+      <p class="section-sub">Serveres med pommes &amp; salat · Slakterstil kjøttdeig 150g</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;">
+        <div class="big-highlight" style="margin-bottom:0;"><div><div class="badge">BIG</div><h3>BIG Burger</h3><p>2 kjøttdeiger + potetpanne</p><div class="price">20€00</div></div></div>
+        <div class="big-highlight" style="margin-bottom:0;"><div><div class="badge">XXL</div><h3>XXL Burger</h3><p>3 kjøttdeiger à 150g</p><div class="price">25€00</div></div></div>
+      </div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Klassisk Burger</div><div class="item-desc">Kjøttdeig 150g, tomat, løk, cheddar, salat</div></div><div class="item-price">15€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Burger i Dag</div><div class="item-desc">Spør om kokkens forslag</div></div><div class="item-price">—</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Desserter</h2><div class="line"></div></div>
+      <div class="items-grid" style="margin-bottom:1.2rem;">
+        <div class="item"><div class="item-info"><div class="item-name">Crème Brûlée</div></div><div class="item-price">5€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tiramisu</div></div><div class="item-price">5€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Dagens Pai</div></div><div class="item-price">6€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Sjokoladefondant</div><div class="item-desc">Flytende sjokolade eller saltet karamell</div></div><div class="item-price">6€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tarte Tatin</div><div class="item-desc">Pisket krem</div></div><div class="item-price">6€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Tarte Tatin + Kule</div><div class="item-desc">Pisket krem, vaniljeis</div></div><div class="item-price">7€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Gourmet-kaffe</div><div class="item-desc">Kaffe, 3 mini-bakverk, pisket krem</div></div><div class="item-price">8€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Pinnsvin</div><div class="item-desc">Sjokoladeis, vanilje, marengs, pinjekjerner, krem, varm kakao</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Pavlova med Frukt</div><div class="item-desc">Pisket krem, marengs, pasjonsfruktis, sesongfrukter</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Profiteroles</div><div class="item-desc">Sjokoladesaus, pisket krem</div></div><div class="item-price">8€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Is – 1 kule</div><div class="item-desc">Kaffe, Sjokolade, Vanilje, Mynte/sjokolade, Rom-rosin, Kokos, Saltet karamell</div></div><div class="item-price">1€70</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Is – 2 kuler</div></div><div class="item-price">3€20</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Is – 3 kuler</div></div><div class="item-price">4€70</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Crêpes &amp; Vafler</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Crêpe Sukker</div></div><div class="item-price">2€70</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Crêpe Sjokoladekrem</div></div><div class="item-price">4€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Vaffel Sukker</div></div><div class="item-price">3€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Vaffel Varm Kakao</div></div><div class="item-price">4€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Ekstra Pisket Krem</div></div><div class="item-price">1€00</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><h2>Drikke</h2><div class="line"></div></div>
+      <div class="items-grid">
+        <div class="item"><div class="item-info"><div class="item-name">Brus (33cl)</div></div><div class="item-price">3€40</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Sirup (25cl)</div></div><div class="item-price">2€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Vann (25cl)</div></div><div class="item-price">2€50</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Espresso</div></div><div class="item-price">1€40</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Fatøl (25cl)</div></div><div class="item-price">3€80</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Husrosé – glass (19cl)</div></div><div class="item-price">2€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Prosecco – glass</div></div><div class="item-price">4€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Champagne (75cl)</div></div><div class="item-price">60€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Mojito</div></div><div class="item-price">7€00</div></div>
+        <div class="item"><div class="item-info"><div class="item-name">Spritz</div></div><div class="item-price">4€50</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="menu-footer">
+<p>Veuillez nous informer de toute allergie à la prise de commande</p>
+    <p style="margin-top:0.5rem;"><span>Bar des Sports</span> · BYENZO · Bon appétit !</p>
+  </div>
+</div>
+
+<script>
+
+  function setLang(lang) {
+    ['fr','en','de','it','no'].forEach(l => {
+      document.getElementById('menu-' + l).style.display = lang === l ? 'block' : 'none';
+      document.getElementById('btn-' + l).style.background = lang === l ? 'var(--red)' : 'var(--grey2)';
+    });
+    window.scrollTo(0, 0);
+  }
+  function showMenu() {
+    document.getElementById('page-home').classList.remove('active');
+    document.getElementById('page-menu').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  function showHome() {
+    document.getElementById('page-menu').classList.remove('active');
+    document.getElementById('page-home').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function openPDJ() {
+    document.getElementById('pdj-popup').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePDJ() {
+    document.getElementById('pdj-popup').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closePDJ(); });
+</script>
+</body>
+</html>
